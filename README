@@ -1,0 +1,55 @@
+# Executando MapReduce no Haskell
+
+Instale a ferramenta `stack`:
+
+```bash
+curl -sSL https://get.haskellstack.org/ | sh
+```
+
+ou
+
+```bash
+wget -qO- https://get.haskellstack.org/ | sh
+```
+
+A criação do projeto foi feito com a seguinte sequência de comandos:
+
+```bash
+stack new mapreduce simple
+cd mapreduce
+stack setup
+```
+
+Editando o arquivo *mapreduce.cabal* e, na linha **build-depends** acrescente as bibliotecas **parallel** e **split**. Na linha anterior a *hs-source-dirs* acrescente a linha **ghc-options:   -threaded -rtsopts -with-rtsopts=-N -eventlog**.
+
+Compile com:
+
+```bash
+stack build --profile
+```
+
+E execute com:
+
+```
+stack exec mapreduce --RTS -- +RTS -N1 -s -ls
+```
+
+altere N1 para o número de cores desejado.
+
+## threadscope
+
+Para instalar o programa *threadscope*, faça o download em http://hackage.haskell.org/package/threadscope e:
+
+```bash
+$ tar zxvf threadscope-0.2.10.tar.gz
+$ cd threadscope-0.2.10
+$ stack install threadscope
+```
+
+Para verificar o comportamento do programa faça:
+
+```bash
+$ threadscope mapreduce.eventlog
+```
+
+Outros exemplos podem ser encontrados no repositório [https://github.com/folivetti/BIGDATA](https://github.com/folivetti/BIGDATA).
